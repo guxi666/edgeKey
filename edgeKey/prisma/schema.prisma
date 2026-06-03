@@ -155,6 +155,19 @@ model SiteSetting {
   homeHeroImage  String?
   defaultProductCover String?
   frontendBackgroundImage String?
+  homeHeroBadge String?
+  homeHeroTitle String?
+  homeStatLabel String?
+  homeProductsTitle String?
+  homeSearchPlaceholder String?
+  homeFeature1Title String?
+  homeFeature1Desc String?
+  homeFeature2Title String?
+  homeFeature2Desc String?
+  homeFeature3Title String?
+  homeFeature3Desc String?
+  homeFeature4Title String?
+  homeFeature4Desc String?
   notice         String?
   supportContact String?
   footerText     String?

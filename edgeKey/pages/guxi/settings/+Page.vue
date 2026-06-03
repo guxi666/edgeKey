@@ -68,8 +68,69 @@
         </label>
       </div>
 
+      <div class="rounded-box border border-base-300 p-4">
+        <h2 class="mb-3 text-lg font-bold">首页文案</h2>
+        <div class="grid gap-4 md:grid-cols-2">
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">顶部胶囊文字</span>
+            <input v-model="form.homeHeroBadge" class="input input-bordered w-full" placeholder="Cloudflare Workers 免费部署自动发卡商城" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">首页主标题</span>
+            <input v-model="form.homeHeroTitle" class="input input-bordered w-full" placeholder="一键部署，全球即达" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">统计卡标题</span>
+            <input v-model="form.homeStatLabel" class="input input-bordered w-full" placeholder="在线商品" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">商品区标题</span>
+            <input v-model="form.homeProductsTitle" class="input input-bordered w-full" placeholder="商品列表" />
+          </label>
+          <label class="flex flex-col gap-1.5 md:col-span-2">
+            <span class="label-text font-medium">搜索框提示</span>
+            <input v-model="form.homeSearchPlaceholder" class="input input-bordered w-full" placeholder="搜索商品..." />
+          </label>
+        </div>
+
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">功能 1 标题</span>
+            <input v-model="form.homeFeature1Title" class="input input-bordered w-full" placeholder="稳定可靠" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">功能 1 说明</span>
+            <input v-model="form.homeFeature1Desc" class="input input-bordered w-full" placeholder="高可用架构" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">功能 2 标题</span>
+            <input v-model="form.homeFeature2Title" class="input input-bordered w-full" placeholder="极速发卡" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">功能 2 说明</span>
+            <input v-model="form.homeFeature2Desc" class="input input-bordered w-full" placeholder="秒级自动发货" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">功能 3 标题</span>
+            <input v-model="form.homeFeature3Title" class="input input-bordered w-full" placeholder="安全加密" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">功能 3 说明</span>
+            <input v-model="form.homeFeature3Desc" class="input input-bordered w-full" placeholder="数据安全保障" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">功能 4 标题</span>
+            <input v-model="form.homeFeature4Title" class="input input-bordered w-full" placeholder="售后无忧" />
+          </label>
+          <label class="flex flex-col gap-1.5">
+            <span class="label-text font-medium">功能 4 说明</span>
+            <input v-model="form.homeFeature4Desc" class="input input-bordered w-full" placeholder="7x24 小时支持" />
+          </label>
+        </div>
+      </div>
+
       <label class="flex flex-col gap-1.5">
-        <span class="label-text font-medium">首页公告</span>
+        <span class="label-text font-medium">首页副标题</span>
         <textarea v-model="form.notice" class="textarea textarea-bordered w-full" rows="4"></textarea>
       </label>
 
@@ -131,6 +192,19 @@ const form = reactive({
   homeHeroImage: site.homeHeroImage ?? "",
   defaultProductCover: site.defaultProductCover ?? "",
   notice: site.notice ?? "",
+  homeHeroBadge: site.homeHeroBadge ?? "",
+  homeHeroTitle: site.homeHeroTitle ?? "",
+  homeStatLabel: site.homeStatLabel ?? "",
+  homeProductsTitle: site.homeProductsTitle ?? "",
+  homeSearchPlaceholder: site.homeSearchPlaceholder ?? "",
+  homeFeature1Title: site.homeFeature1Title ?? "",
+  homeFeature1Desc: site.homeFeature1Desc ?? "",
+  homeFeature2Title: site.homeFeature2Title ?? "",
+  homeFeature2Desc: site.homeFeature2Desc ?? "",
+  homeFeature3Title: site.homeFeature3Title ?? "",
+  homeFeature3Desc: site.homeFeature3Desc ?? "",
+  homeFeature4Title: site.homeFeature4Title ?? "",
+  homeFeature4Desc: site.homeFeature4Desc ?? "",
   supportContact: site.supportContact ?? "",
   footerText: site.footerText ?? "",
   orderNotice: site.orderNotice ?? "",
@@ -159,6 +233,19 @@ async function handleSave() {
     form.homeHeroImage = result.homeHeroImage ?? "";
     form.defaultProductCover = result.defaultProductCover ?? "";
     form.notice = result.notice ?? "";
+    form.homeHeroBadge = result.homeHeroBadge ?? "";
+    form.homeHeroTitle = result.homeHeroTitle ?? "";
+    form.homeStatLabel = result.homeStatLabel ?? "";
+    form.homeProductsTitle = result.homeProductsTitle ?? "";
+    form.homeSearchPlaceholder = result.homeSearchPlaceholder ?? "";
+    form.homeFeature1Title = result.homeFeature1Title ?? "";
+    form.homeFeature1Desc = result.homeFeature1Desc ?? "";
+    form.homeFeature2Title = result.homeFeature2Title ?? "";
+    form.homeFeature2Desc = result.homeFeature2Desc ?? "";
+    form.homeFeature3Title = result.homeFeature3Title ?? "";
+    form.homeFeature3Desc = result.homeFeature3Desc ?? "";
+    form.homeFeature4Title = result.homeFeature4Title ?? "";
+    form.homeFeature4Desc = result.homeFeature4Desc ?? "";
     form.supportContact = result.supportContact ?? "";
     form.footerText = result.footerText ?? "";
     form.orderNotice = result.orderNotice ?? "";

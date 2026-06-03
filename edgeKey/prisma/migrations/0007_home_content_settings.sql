@@ -1,0 +1,13 @@
+ALTER TABLE "SiteSetting" ADD COLUMN "homeHeroBadge" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeHeroTitle" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeStatLabel" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeProductsTitle" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeSearchPlaceholder" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeFeature1Title" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeFeature1Desc" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeFeature2Title" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeFeature2Desc" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeFeature3Title" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeFeature3Desc" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeFeature4Title" TEXT;
+ALTER TABLE "SiteSetting" ADD COLUMN "homeFeature4Desc" TEXT;

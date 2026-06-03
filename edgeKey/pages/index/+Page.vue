@@ -2,14 +2,14 @@
   <div class="home-page">
     <section class="banner">
       <div class="banner-content">
-        <div class="hero-badge">Cloudflare Workers 免费部署自动发卡商城</div>
-        <h1>一键部署，全球即达</h1>
-        <p>{{ site.notice || "安全稳定 · 高效便捷 · 智能发卡" }}</p>
+        <div class="hero-badge">{{ heroBadge }}</div>
+        <h1>{{ heroTitle }}</h1>
+        <p>{{ heroSubtitle }}</p>
       </div>
 
       <div class="banner-right">
         <div class="stat-card">
-          <div class="stat-label">在线商品</div>
+          <div class="stat-label">{{ statLabel }}</div>
           <div class="stat-value">
             {{ catalog.products.length }}
             <span aria-hidden="true">🎁</span>
@@ -19,39 +19,18 @@
     </section>
 
     <section class="features">
-      <div class="feature-card">
-        <div class="feature-icon fi-1" aria-hidden="true">🛡️</div>
+      <div v-for="feature in featureCards" :key="feature.className" class="feature-card">
+        <div class="feature-icon" :class="feature.className" aria-hidden="true">{{ feature.icon }}</div>
         <div class="feature-info">
-          <h3>稳定可靠</h3>
-          <p>高可用架构</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon fi-2" aria-hidden="true">⚡</div>
-        <div class="feature-info">
-          <h3>极速发卡</h3>
-          <p>秒级自动发货</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon fi-3" aria-hidden="true">🔐</div>
-        <div class="feature-info">
-          <h3>安全加密</h3>
-          <p>数据安全保障</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon fi-4" aria-hidden="true">💖</div>
-        <div class="feature-info">
-          <h3>售后无忧</h3>
-          <p>7x24 小时支持</p>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.desc }}</p>
         </div>
       </div>
     </section>
 
     <section class="products-section">
       <div class="products-header">
-        <div class="products-title">商品列表</div>
+        <div class="products-title">{{ productsTitle }}</div>
         <div class="filter-controls">
           <select v-model="activeCategoryId" class="select-custom" aria-label="商品分类">
             <option value="all">全部分类</option>
@@ -61,7 +40,7 @@
           </select>
           <div class="search-wrapper">
             <span class="search-icon" aria-hidden="true">🔎</span>
-            <input v-model="searchTerm" type="search" class="search-input" placeholder="搜索商品..." />
+            <input v-model="searchTerm" type="search" class="search-input" :placeholder="searchPlaceholder" />
           </div>
         </div>
       </div>
@@ -107,6 +86,38 @@ const { site, catalog } = useData<Data>();
 const activeCategoryId = ref("all");
 const searchTerm = ref("");
 const defaultProductCoverUrl = computed(() => site.defaultProductCover || emptyCoverUrl);
+const heroBadge = computed(() => site.homeHeroBadge || site.siteSubtitle || "Cloudflare Workers 免费部署自动发卡商城");
+const heroTitle = computed(() => site.homeHeroTitle || "一键部署，全球即达");
+const heroSubtitle = computed(() => site.notice || "安全稳定 · 高效便捷 · 智能发卡");
+const statLabel = computed(() => site.homeStatLabel || "在线商品");
+const productsTitle = computed(() => site.homeProductsTitle || "商品列表");
+const searchPlaceholder = computed(() => site.homeSearchPlaceholder || "搜索商品...");
+const featureCards = computed(() => [
+  {
+    icon: "🛡️",
+    className: "fi-1",
+    title: site.homeFeature1Title || "稳定可靠",
+    desc: site.homeFeature1Desc || "高可用架构",
+  },
+  {
+    icon: "⚡",
+    className: "fi-2",
+    title: site.homeFeature2Title || "极速发卡",
+    desc: site.homeFeature2Desc || "秒级自动发货",
+  },
+  {
+    icon: "🔐",
+    className: "fi-3",
+    title: site.homeFeature3Title || "安全加密",
+    desc: site.homeFeature3Desc || "数据安全保障",
+  },
+  {
+    icon: "💖",
+    className: "fi-4",
+    title: site.homeFeature4Title || "售后无忧",
+    desc: site.homeFeature4Desc || "7x24 小时支持",
+  },
+]);
 const filteredProducts = computed(() => {
   const keyword = searchTerm.value.trim().toLowerCase();
   return catalog.products.filter((product) => {
