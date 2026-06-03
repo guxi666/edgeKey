@@ -15,39 +15,48 @@
           <div class="stat-label">在线商品</div>
           <div class="stat-value">
             {{ catalog.products.length }}
-            <span>▱</span>
+            <span aria-hidden="true">🎁</span>
           </div>
         </div>
         <div class="banner-avatar">
-          <img v-if="homeHeroImageUrl" :src="homeHeroImageUrl" alt="banner" />
+          <svg class="avatar-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="50" cy="50" r="40" stroke="#1e1b4b" stroke-width="3" fill="none" />
+            <path d="M30 45 C30 30 70 30 70 45" stroke="#1e1b4b" stroke-width="4" stroke-linecap="round" />
+            <path d="M25 43 L75 40" stroke="#1e1b4b" stroke-width="5" stroke-linecap="round" />
+            <circle cx="42" cy="55" r="3" fill="#1e1b4b" />
+            <circle cx="58" cy="55" r="3" fill="#1e1b4b" />
+            <path d="M45 70 Q50 75 55 70" stroke="#1e1b4b" stroke-width="3" fill="none" />
+            <path d="M20 50 Q15 50 20 60" stroke="#1e1b4b" stroke-width="4" fill="none" />
+            <path d="M80 50 Q85 50 80 60" stroke="#1e1b4b" stroke-width="4" fill="none" />
+          </svg>
         </div>
       </div>
     </section>
 
     <section class="features">
       <div class="feature-card">
-        <div class="feature-icon fi-1">盾</div>
+        <div class="feature-icon fi-1" aria-hidden="true">🛡️</div>
         <div class="feature-info">
           <h3>稳定可靠</h3>
           <p>高可用架构</p>
         </div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon fi-2">快</div>
+        <div class="feature-icon fi-2" aria-hidden="true">⚡</div>
         <div class="feature-info">
           <h3>极速发卡</h3>
           <p>秒级自动发货</p>
         </div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon fi-3">锁</div>
+        <div class="feature-icon fi-3" aria-hidden="true">🔐</div>
         <div class="feature-info">
           <h3>安全加密</h3>
           <p>数据安全保障</p>
         </div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon fi-4">心</div>
+        <div class="feature-icon fi-4" aria-hidden="true">💖</div>
         <div class="feature-info">
           <h3>售后无忧</h3>
           <p>7x24 小时支持</p>
@@ -66,7 +75,7 @@
             </option>
           </select>
           <div class="search-wrapper">
-            <span class="search-icon">⌕</span>
+            <span class="search-icon" aria-hidden="true">🔎</span>
             <input v-model="searchTerm" type="search" class="search-input" placeholder="搜索商品..." />
           </div>
         </div>
@@ -91,7 +100,7 @@
       </div>
 
       <div v-else class="empty-state">
-        <div class="empty-icon">□</div>
+        <div class="empty-icon" aria-hidden="true">📦</div>
         <h2>当前还没有上架商品</h2>
         <p>请先在后台录入分类、商品和库存</p>
         <a href="/guxi" class="front-btn-primary">前往后台管理</a>
@@ -106,14 +115,12 @@ import { useData } from "vike-vue/useData";
 import { navigate } from "vike/client/router";
 import { formatCents } from "../../lib/utils/money";
 import emptyCoverUrl from "../../assets/empty.jpg";
-import homeHeroImage from "../../assets/home-n.png";
 import type { Data } from "./+data";
 import type { ProductSummary } from "../../modules/catalog/types";
 
 const { site, catalog } = useData<Data>();
 const activeCategoryId = ref("all");
 const searchTerm = ref("");
-const homeHeroImageUrl = computed(() => site.homeHeroImage || homeHeroImage);
 const defaultProductCoverUrl = computed(() => site.defaultProductCover || emptyCoverUrl);
 const filteredProducts = computed(() => {
   const keyword = searchTerm.value.trim().toLowerCase();

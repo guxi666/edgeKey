@@ -13,11 +13,11 @@
         </a>
         <nav class="nav-links">
           <a href="/" class="nav-item" :class="{ active: isHomeRoute }">
-            <span>⌂</span>
+            <span class="nav-emoji" aria-hidden="true">🏠</span>
             <span>首页</span>
           </a>
           <a href="/query" class="nav-item" :class="{ active: isQueryRoute }">
-            <span>▣</span>
+            <span class="nav-emoji" aria-hidden="true">📋</span>
             <span>订单查询</span>
           </a>
         </nav>
@@ -196,6 +196,11 @@ a {
   font-size: 14px;
   font-weight: 600;
   transition: color 0.2s ease;
+}
+
+.nav-emoji {
+  font-size: 15px;
+  line-height: 1;
 }
 
 .nav-item.active {
