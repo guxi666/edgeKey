@@ -1,139 +1,100 @@
 <template>
-  <div class="space-y-8">
+  <div class="home-page">
+    <section class="banner">
+      <div class="sphere-1"></div>
+      <div class="sphere-2"></div>
 
-    <section class="home-hero-stage relative pt-12">
-      <img class="hero-img pointer-events-none" :src="homeHeroImageUrl" alt="hero-img">
-      <div class="hero-glass relative rounded-box shadow-sm overflow-hidden">
-        <!-- 背景装饰 -->
-        <div class="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true">
-          <div class="absolute -right-20 -top-20 h-96 w-96 rounded-full bg-primary"></div>
-          <div class="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-secondary"></div>
+      <div class="banner-content">
+        <div class="hero-badge">Cloudflare Workers 免费部署自动发卡商城</div>
+        <h1>一键部署，全球即达</h1>
+        <p>{{ site.notice || "安全稳定 · 高效便捷 · 智能发卡" }}</p>
+      </div>
+
+      <div class="banner-right">
+        <div class="stat-card">
+          <div class="stat-label">在线商品</div>
+          <div class="stat-value">
+            {{ catalog.products.length }}
+            <span>▱</span>
+          </div>
         </div>
-
-        <div class="relative flex flex-col gap-6 px-8 py-8 lg:flex-row lg:items-center lg:justify-between">
-          <!-- 左侧文字 -->
-          <div class="space-y-4 max-w-lg">
-            <div class="badge badge-primary badge-outline font-semibold tracking-widest uppercase">
-              {{ site.siteSubtitle || 'Welcome' }}
-            </div>
-            <p v-if="site.notice" class="text-base-content/60 text-sm leading-relaxed border-l-2 border-primary pl-3">
-              {{ site.notice }}
-            </p>
-          </div>
-
-          <!-- 右侧统计 -->
-          <div class="stats stats-glass shrink-0 shadow max-lg:w-full lg:mr-32">
-            <!-- <div class="stat">
-              <div class="stat-figure text-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 10h16M4 14h8" />
-                </svg>
-              </div>
-              <div class="stat-title">商品分类</div>
-              <div class="stat-value text-primary">{{ catalog.categories.length }}</div>
-            </div> -->
-            <div class="stat">
-              <div class="stat-title text-center">在售商品</div>
-              <div class="flex text-secondary">
-                <div class="stat-value mr-2 text-secondary">{{ catalog.products.length }}</div>
-                <div class="stat-figure flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="size-8" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="banner-avatar">
+          <img v-if="homeHeroImageUrl" :src="homeHeroImageUrl" alt="banner" />
         </div>
       </div>
     </section>
 
-    <section class="space-y-4">
-      <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-semibold">商品列表</h2>
+    <section class="features">
+      <div class="feature-card">
+        <div class="feature-icon fi-1">盾</div>
+        <div class="feature-info">
+          <h3>稳定可靠</h3>
+          <p>高可用架构</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-2">快</div>
+        <div class="feature-info">
+          <h3>极速发卡</h3>
+          <p>秒级自动发货</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-3">锁</div>
+        <div class="feature-info">
+          <h3>安全加密</h3>
+          <p>数据安全保障</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon fi-4">心</div>
+        <div class="feature-info">
+          <h3>售后无忧</h3>
+          <p>7x24 小时支持</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="products-section">
+      <div class="products-header">
+        <div class="products-title">商品列表</div>
+        <div class="filter-controls">
+          <select v-model="activeCategoryId" class="select-custom" aria-label="商品分类">
+            <option value="all">全部分类</option>
+            <option v-for="category in catalog.categories" :key="category.id" :value="String(category.id)">
+              {{ category.name }}
+            </option>
+          </select>
+          <div class="search-wrapper">
+            <span class="search-icon">⌕</span>
+            <input v-model="searchTerm" type="search" class="search-input" placeholder="搜索商品..." />
+          </div>
+        </div>
       </div>
 
-      <div v-if="catalog.categories.length" class="flex flex-wrap gap-2 mb-6">
-        <button
-          class="btn btn-sm"
-          :class="activeCategoryId === null ? 'btn-primary' : 'btn-outline'"
-          @click="activeCategoryId = null"
-        >
-          全部商品
-        </button>
-        <button
-          v-for="category in catalog.categories"
-          :key="category.id"
-          class="btn btn-sm"
-          :class="activeCategoryId === category.id ? 'btn-primary' : 'btn-outline'"
-          @click="activeCategoryId = category.id"
-        >
-          {{ category.name }}
-        </button>
-      </div>
-
-      <div v-if="filteredProducts.length" class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <article v-for="product in filteredProducts" :key="product.id" class="card bg-base-100 shadow-sm hover:shadow-md transition-all duration-300 group rounded-xl overflow-hidden border border-base-200 cursor-pointer" @click="navigateToProduct(product.slug)">
-
-          <!-- 商品图片 -->
-          <figure class="relative pt-[100%] overflow-hidden">
-            <img
-              :src="product.coverImage || defaultProductCoverUrl"
-              :alt="product.name"
-              class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <!-- 分类标签 -->
-            <div class="absolute top-2.5 left-2.5">
-              <span class="badge badge-primary badge-sm font-semibold rounded">
-                {{ product.categoryName || '默认' }}
-              </span>
-            </div>
+      <div v-if="filteredProducts.length" class="product-grid">
+        <article v-for="product in filteredProducts" :key="product.id" class="product-card" @click="navigateToProduct(product.slug)">
+          <figure>
+            <img :src="product.coverImage || defaultProductCoverUrl" :alt="product.name" />
+            <span class="category-pill">{{ product.categoryName || "默认" }}</span>
           </figure>
-
-          <!-- 商品信息 -->
-          <div class="card-body p-3">
-            <!-- 库存状态标签 + 商品名称 -->
-            <div class="flex items-start gap-1.5">
-              <span
-                v-if="product.deliveryType === 'CARD_AUTO'"
-                class="text-xs font-medium px-1.5 py-0.5 rounded shrink-0 mt-0.5"
-                :class="{
-                  'bg-amber-500/10 text-amber-600': lowStock(product),
-                  'bg-emerald-500/10 text-emerald-600': !lowStock(product) && product.availableStock > 0,
-                  'bg-red-500/10 text-red-600': product.availableStock === 0
-                }"
-              >
-                {{ product.availableStock === 0 ? '已售罄' : lowStock(product) ? `紧张(${product.availableStock})` : '有货' }}
-              </span>
-              <span
-                v-else-if="product.deliveryType === 'FIXED_CARD'"
-                class="text-xs font-medium px-1.5 py-0.5 rounded shrink-0 mt-0.5 bg-emerald-500/10 text-emerald-600"
-              >
-                有货
-              </span>
-              <span
-                v-else-if="product.deliveryType === 'MANUAL'"
-                class="text-xs font-medium px-1.5 py-0.5 rounded shrink-0 mt-0.5 bg-sky-500/10 text-sky-600"
-              >
-                人工发货
-              </span>
-              <h3 class="card-title text-sm font-semibold line-clamp-2 text-base-content flex-1 min-w-0">
-                {{ product.name }}
-              </h3>
+          <div class="product-info">
+            <div class="product-title-row">
+              <span class="stock-pill" :class="stockClass(product)">{{ stockText(product) }}</span>
+              <h3>{{ product.name }}</h3>
             </div>
-
-            <!-- 价格 -->
-            <div class="flex items-baseline gap-0.5 mt-2">
-              <span class="text-xs font-bold text-red-500">¥</span>
-              <span class="text-xl font-bold text-red-500 leading-none">{{ formatCents(product.price) }}</span>
+            <div class="product-price">
+              <span>¥</span>{{ formatCents(product.price) }}
             </div>
           </div>
-
         </article>
       </div>
 
-      <div v-else class="rounded-box border border-dashed border-base-300 bg-base-100 p-8 text-center text-base-content/60">
-        当前还没有上架商品，请先在后台录入分类、商品和库存。
+      <div v-else class="empty-state">
+        <div class="empty-icon">□</div>
+        <h2>当前还没有上架商品</h2>
+        <p>请先在后台录入分类、商品和库存</p>
+        <a href="/guxi" class="front-btn-primary">前往后台管理</a>
       </div>
     </section>
   </div>
@@ -150,112 +111,485 @@ import type { Data } from "./+data";
 import type { ProductSummary } from "../../modules/catalog/types";
 
 const { site, catalog } = useData<Data>();
-const activeCategoryId = ref<number | null>(null);
+const activeCategoryId = ref("all");
+const searchTerm = ref("");
 const homeHeroImageUrl = computed(() => site.homeHeroImage || homeHeroImage);
 const defaultProductCoverUrl = computed(() => site.defaultProductCover || emptyCoverUrl);
 const filteredProducts = computed(() => {
-  if (activeCategoryId.value === null) {
-    return catalog.products;
-  }
-
-  return catalog.products.filter((product) => product.categoryId === activeCategoryId.value);
+  const keyword = searchTerm.value.trim().toLowerCase();
+  return catalog.products.filter((product) => {
+    const matchesCategory = activeCategoryId.value === "all" || String(product.categoryId) === activeCategoryId.value;
+    const matchesKeyword = !keyword || product.name.toLowerCase().includes(keyword) || (product.categoryName ?? "").toLowerCase().includes(keyword);
+    return matchesCategory && matchesKeyword;
+  });
 });
-// 库存紧张
-const lowStock = (product: ProductSummary) => {
-  return product.availableStock >= 0 && product.availableStock < 10
+
+function lowStock(product: ProductSummary) {
+  return product.availableStock >= 0 && product.availableStock < 10;
 }
 
-// 跳转到商品详情页
-const navigateToProduct = (slug: string) => {
+function stockText(product: ProductSummary) {
+  if (product.deliveryType === "MANUAL") return "人工发货";
+  if (product.availableStock === 0) return "已售罄";
+  if (lowStock(product)) return `紧张(${product.availableStock})`;
+  return "有货";
+}
+
+function stockClass(product: ProductSummary) {
+  if (product.deliveryType === "MANUAL") return "manual";
+  if (product.availableStock === 0) return "empty";
+  if (lowStock(product)) return "low";
+  return "available";
+}
+
+function navigateToProduct(slug: string) {
   navigate(`/product/${slug}`);
 }
 </script>
 
 <style>
-.hero-img {
-  width: 230px;
-  height: auto;
-  position: absolute;
-  top: -35px;
-  right: -22px;
-  z-index: 3;
+.home-page {
+  display: grid;
+  gap: 25px;
 }
 
-.home-hero-stage {
-  isolation: isolate;
-}
-
-.home-hero-stage::before {
-  content: "";
-  position: absolute;
-  inset: 18px -28px -28px -28px;
-  z-index: -2;
-  pointer-events: none;
-  background:
-    linear-gradient(132deg, rgba(255, 145, 190, 0.26) 0 18%, transparent 18% 42%, rgba(127, 155, 255, 0.24) 42% 66%, transparent 66%),
-    linear-gradient(28deg, transparent 0 24%, rgba(118, 221, 255, 0.2) 24% 38%, transparent 38% 70%, rgba(255, 225, 145, 0.22) 70% 100%);
-  filter: blur(18px);
-  transform: translateZ(0);
-}
-
-.home-hero-stage::after {
-  content: "";
-  position: absolute;
-  inset: 40px 10px -8px 10px;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(90deg, rgba(99, 102, 241, 0.09) 0 1px, transparent 1px 42px),
-    repeating-linear-gradient(0deg, rgba(236, 72, 153, 0.07) 0 1px, transparent 1px 42px);
-  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
-  opacity: 0.48;
-}
-
-.hero-glass {
-  min-height: 166px;
-  z-index: 1;
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.18));
+.banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 220px;
+  overflow: hidden;
+  padding: 40px 50px;
   border: 1px solid rgba(255, 255, 255, 0.68);
-  box-shadow:
-    0 28px 80px rgba(15, 23, 42, 0.18),
-    0 12px 30px rgba(99, 102, 241, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.92),
-    inset 0 0 36px rgba(255, 255, 255, 0.24);
-  backdrop-filter: blur(28px) saturate(1.65);
-  -webkit-backdrop-filter: blur(28px) saturate(1.65);
+  border-radius: 24px;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0.72) 0%, rgba(243, 232, 255, 0.62) 100%);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.02);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-.hero-glass::before {
-  content: "";
+.banner-content {
+  position: relative;
+  z-index: 2;
+  max-width: 60%;
+}
+
+.hero-badge {
+  display: inline-block;
+  margin-bottom: 15px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4f46e5, #db2777);
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.banner h1 {
+  margin: 0 0 15px;
+  color: #111827;
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.banner p {
+  color: #6b7280;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.banner-right {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.stat-card {
+  min-width: 128px;
+  padding: 20px 25px;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 24px rgba(147, 51, 234, 0.08);
+  text-align: center;
+}
+
+.stat-label {
+  margin-bottom: 5px;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.stat-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #db2777;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.stat-value span {
+  font-size: 20px;
+}
+
+.banner-avatar {
+  display: grid;
+  width: 112px;
+  height: 112px;
+  place-items: center;
+  overflow: hidden;
+  border: 3px solid white;
+  border-radius: 999px;
+  background: #e0e7ff;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+}
+
+.banner-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sphere-1,
+.sphere-2 {
   position: absolute;
-  inset: 0;
+  border-radius: 999px;
   pointer-events: none;
-  background:
-    linear-gradient(100deg, rgba(255, 255, 255, 0.78) 0%, rgba(255, 255, 255, 0.12) 30%, rgba(255, 255, 255, 0) 56%),
-    linear-gradient(78deg, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0.52) 50%, rgba(255, 255, 255, 0) 62%);
-  opacity: 0.74;
-  mix-blend-mode: screen;
 }
 
-.hero-glass::after {
-  content: "";
+.sphere-1 {
+  top: -20px;
+  right: 25%;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #e0e7ff 50%, #c7d2fe);
+  filter: blur(1px);
+  opacity: 0.7;
+}
+
+.sphere-2 {
+  right: 38%;
+  bottom: 20px;
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #fbcfe8 60%, #f472b6);
+  opacity: 0.8;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.01);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.feature-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.feature-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  place-items: center;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.fi-1 { background: #e0e7ff; color: #4f46e5; }
+.fi-2 { background: #dcfce7; color: #16a34a; }
+.fi-3 { background: #e0f2fe; color: #0284c7; }
+.fi-4 { background: #fce7f3; color: #db2777; }
+
+.feature-info h3 {
+  margin: 0 0 2px;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.feature-info p {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.products-section {
+  min-height: 400px;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.02);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.products-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+.products-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1f2937;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.products-title::before {
+  content: "●";
+  color: #8b5cf6;
+  font-size: 12px;
+}
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.select-custom,
+.search-input {
+  height: 38px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #4b5563;
+  font-size: 13px;
+  outline: none;
+}
+
+.select-custom {
+  min-width: 120px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-input {
+  width: 200px;
+  padding: 8px 16px 8px 35px;
+}
+
+.search-icon {
   position: absolute;
-  left: 18px;
-  right: 18px;
-  top: 12px;
-  height: 1px;
-  pointer-events: none;
-  background: rgba(255, 255, 255, 0.85);
+  left: 12px;
+  top: 50%;
+  color: #9ca3af;
+  font-size: 13px;
+  transform: translateY(-50%);
 }
 
-.stats-glass {
-  background: rgba(255, 255, 255, 0.34);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow:
-    0 18px 36px rgba(71, 85, 105, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.86),
-    inset 0 0 22px rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(24px) saturate(1.55);
-  -webkit-backdrop-filter: blur(24px) saturate(1.55);
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.product-card {
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 36px rgba(99, 102, 241, 0.12);
+}
+
+.product-card figure {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.product-card figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover figure img {
+  transform: scale(1.04);
+}
+
+.category-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: white;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.product-info {
+  padding: 14px;
+}
+
+.product-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.product-title-row h3 {
+  min-width: 0;
+  margin: 0;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.stock-pill {
+  flex: 0 0 auto;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.stock-pill.available { background: #dcfce7; color: #16a34a; }
+.stock-pill.low { background: #fef3c7; color: #d97706; }
+.stock-pill.empty { background: #fee2e2; color: #ef4444; }
+.stock-pill.manual { background: #e0f2fe; color: #0284c7; }
+
+.product-price {
+  margin-top: 12px;
+  color: #ef4444;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.product-price span {
+  margin-right: 1px;
+  font-size: 12px;
+}
+
+.empty-state {
+  padding: 60px 0;
+  text-align: center;
+}
+
+.empty-icon {
+  margin-bottom: 15px;
+  color: #c084fc;
+  font-size: 50px;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.empty-state h2 {
+  margin: 0 0 8px;
+  color: #1f2937;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.empty-state p {
+  margin-bottom: 25px;
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.front-btn-primary {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #a855f7, #6366f1);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  transition: opacity 0.2s ease;
+}
+
+.front-btn-primary:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 980px) {
+  .banner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .banner-content {
+    max-width: 100%;
+  }
+
+  .features,
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .banner,
+  .products-section {
+    padding: 24px;
+  }
+
+  .banner h1 {
+    font-size: 28px;
+  }
+
+  .banner-right,
+  .products-header,
+  .filter-controls {
+    align-items: stretch;
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .features,
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-input,
+  .select-custom {
+    width: 100%;
+  }
 }
 </style>

@@ -15,7 +15,7 @@
           <input type="hidden" name="csrfToken" :value="csrfToken" />
           <label class="flex flex-col gap-1.5">
             <span class="label-text font-medium">用户名</span>
-            <input name="username" class="input input-bordered w-full" placeholder="guxi" required />
+            <input name="username" class="input input-bordered w-full" placeholder="请输入用户名" required />
           </label>
           <label class="flex flex-col gap-1.5">
             <span class="label-text font-medium">密码</span>
