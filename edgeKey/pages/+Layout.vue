@@ -172,13 +172,13 @@ a {
   place-items: center;
   overflow: hidden;
   border-radius: 999px;
-  background: #1e1b4b;
+  background: transparent;
 }
 
 .logo-icon img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .nav-links {

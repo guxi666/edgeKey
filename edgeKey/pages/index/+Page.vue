@@ -1,9 +1,6 @@
 <template>
   <div class="home-page">
     <section class="banner">
-      <div class="sphere-1"></div>
-      <div class="sphere-2"></div>
-
       <div class="banner-content">
         <div class="hero-badge">Cloudflare Workers 免费部署自动发卡商城</div>
         <h1>一键部署，全球即达</h1>
@@ -17,18 +14,6 @@
             {{ catalog.products.length }}
             <span aria-hidden="true">🎁</span>
           </div>
-        </div>
-        <div class="banner-avatar">
-          <svg class="avatar-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="50" cy="50" r="40" stroke="#1e1b4b" stroke-width="3" fill="none" />
-            <path d="M30 45 C30 30 70 30 70 45" stroke="#1e1b4b" stroke-width="4" stroke-linecap="round" />
-            <path d="M25 43 L75 40" stroke="#1e1b4b" stroke-width="5" stroke-linecap="round" />
-            <circle cx="42" cy="55" r="3" fill="#1e1b4b" />
-            <circle cx="58" cy="55" r="3" fill="#1e1b4b" />
-            <path d="M45 70 Q50 75 55 70" stroke="#1e1b4b" stroke-width="3" fill="none" />
-            <path d="M20 50 Q15 50 20 60" stroke="#1e1b4b" stroke-width="4" fill="none" />
-            <path d="M80 50 Q85 50 80 60" stroke="#1e1b4b" stroke-width="4" fill="none" />
-          </svg>
         </div>
       </div>
     </section>
@@ -220,11 +205,13 @@ function navigateToProduct(slug: string) {
 .stat-card {
   min-width: 128px;
   padding: 20px 25px;
-  border: 1px solid rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.22));
   box-shadow: 0 8px 24px rgba(147, 51, 234, 0.08);
   text-align: center;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
 
 .stat-label {
@@ -245,50 +232,6 @@ function navigateToProduct(slug: string) {
 
 .stat-value span {
   font-size: 20px;
-}
-
-.banner-avatar {
-  display: grid;
-  width: 112px;
-  height: 112px;
-  place-items: center;
-  overflow: hidden;
-  border: 3px solid white;
-  border-radius: 999px;
-  background: #e0e7ff;
-  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
-}
-
-.banner-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.sphere-1,
-.sphere-2 {
-  position: absolute;
-  border-radius: 999px;
-  pointer-events: none;
-}
-
-.sphere-1 {
-  top: -20px;
-  right: 25%;
-  width: 140px;
-  height: 140px;
-  background: radial-gradient(circle at 30% 30%, #ffffff, #e0e7ff 50%, #c7d2fe);
-  filter: blur(1px);
-  opacity: 0.7;
-}
-
-.sphere-2 {
-  right: 38%;
-  bottom: 20px;
-  width: 50px;
-  height: 50px;
-  background: radial-gradient(circle at 30% 30%, #ffffff, #fbcfe8 60%, #f472b6);
-  opacity: 0.8;
 }
 
 .features {
@@ -424,12 +367,19 @@ function navigateToProduct(slug: string) {
 }
 
 .product-card {
+  position: relative;
   overflow: hidden;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.64);
+  border: 1px solid rgba(255, 255, 255, 0.68);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.18)),
+    rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 18px 42px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(20px) saturate(145%);
+  -webkit-backdrop-filter: blur(20px) saturate(145%);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -443,7 +393,7 @@ function navigateToProduct(slug: string) {
   margin: 0;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .product-card figure img {
@@ -470,7 +420,19 @@ function navigateToProduct(slug: string) {
 }
 
 .product-info {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
   padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.18));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 14px 30px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
 }
 
 .product-title-row {
